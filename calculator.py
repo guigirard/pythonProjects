@@ -20,7 +20,7 @@ def perform_math():
         run = False
     else:
         equation = re.sub('[A-Za-z,.:()" "]', '', equation)
-        if previous==0:
+        if previous == 0:
             previous = eval(equation)
         else:
             previous = eval(str(previous) + equation)
