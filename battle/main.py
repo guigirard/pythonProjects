@@ -77,6 +77,11 @@ while running:
         choice = input("    Choose action: ")
         index = int(choice) - 1
 
+        # Checks if player won
+        if defeated_enemies == number_enemies:
+            print(bcolors.OKGREEN + "You win!" + bcolors.ENDC)
+            running = False
+
         # If player selects to attack, this flow will apply to the combat
         if index == 0:
             dmg = player.get_generate_damage()
@@ -171,16 +176,15 @@ while running:
                     defeated_enemies += 1
                     del enemies[enemy]
 
-    # Check if battle is over
-    # Check if player won
-    if defeated_enemies == number_enemies:
-        print(bcolors.OKGREEN + "You win!" + bcolors.ENDC)
-        running = False
-
     print("\n")
     # Enemy attack phase
     for enemy in enemies:
         enemy_choice = random.randrange(0, 2)
+
+        # Check if enemies won
+        if defeated_players == number_players:
+            print(bcolors.FAIL + "Your enemies has defeated you!" + bcolors.ENDC)
+            running = False
 
         if enemy_choice == 0:
             # Choose attack
@@ -215,8 +219,3 @@ while running:
                 players[target].take_damage(magic_dmg)
                 print(bcolors.FAIL + spell.name + " deals", str(magic_dmg),
                       "points of damage to " + players[target].name.replace(" ", "") + bcolors.ENDC)
-
-    # Check if enemies won
-    if defeated_players == number_players:
-        print(bcolors.FAIL + "Your enemies has defeated you!" + bcolors.ENDC)
-        running = False
