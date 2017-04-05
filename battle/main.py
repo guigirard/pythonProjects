@@ -3,6 +3,8 @@ from classes.magic import Spell
 from classes.inventory import Item
 import random
 
+
+
 # Create black magic
 fire = Spell("Fire", 25, 600, "black")
 thunder = Spell("Thunder", 25, 600, "black")
@@ -37,13 +39,16 @@ enemy_spells = [fire, thunder, meteor, curaga]
 player1 = Person("Valos:", 3260, 132, 300, 34, player_spells, player_items)
 player2 = Person("Nick :", 4160, 188, 311, 34, player_spells, player_items)
 player3 = Person("Robot:", 3089, 174, 288, 34, player_spells, player_items)
+players = [player1, player2, player3]
+defeated_players = 0
+number_players = len(players)
 
 enemy1 = Person("Imp    ", 1250, 130, 560, 325, enemy_spells, [])
 enemy2 = Person("Magus", 18200, 701, 525, 25, enemy_spells, [])
 enemy3 = Person("Imp    ", 1250, 130, 560, 325, enemy_spells, [])
-
-players = [player1, player2, player3]
 enemies = [enemy1, enemy2, enemy3]
+defeated_enemies = 0
+number_enemies = len(enemies)
 
 running = True
 i = 0
@@ -81,6 +86,7 @@ while running:
 
             if enemies[enemy].get_hp() == 0:
                 print(enemies[enemy].name.replace(" ", "") + " has died")
+                defeated_enemies += 1
                 del enemies[enemy]
         # If player selects to use magic, this flow will apply to the combat
         elif index == 1:
@@ -117,6 +123,7 @@ while running:
 
             if enemies[enemy].get_hp() == 0:
                 print(enemies[enemy].name.replace(" ", "") + " has died")
+                defeated_enemies += 1
                 del enemies[enemy]
 
         # If player selects an item, this flow will apply to the combat
@@ -161,28 +168,13 @@ while running:
 
                 if enemies[enemy].get_hp() == 0:
                     print(enemies[enemy].name.replace(" ", "") + " has died")
+                    defeated_enemies += 1
                     del enemies[enemy]
 
     # Check if battle is over
-    defeated_enemies = 0
-    defeated_players = 0
-
-    for enemy in enemies:
-        if enemy.get_hp() == 0:
-            defeated_enemies += 1
-
-    for player in players:
-        if player.get_hp() == 0:
-            defeated_players += 1
-
     # Check if player won
-    if defeated_enemies == 3:
+    if defeated_enemies == number_enemies:
         print(bcolors.OKGREEN + "You win!" + bcolors.ENDC)
-        running = False
-
-    # Check if enemies won
-    elif defeated_players == 3:
-        print(bcolors.FAIL + "Your enemies has defeated you!" + bcolors.ENDC)
         running = False
 
     print("\n")
@@ -192,7 +184,7 @@ while running:
 
         if enemy_choice == 0:
             # Choose attack
-            target = random.randrange(0, 3)
+            target = random.randrange(0, len(players))
             enemy_dmg = enemies[0].get_generate_damage()
 
             players[target].take_damage(enemy_dmg)
@@ -201,6 +193,7 @@ while running:
 
             if players[target].get_hp() == 0:
                 print(players[target].name.replace(" ", "") + " has died")
+                defeated_players += 1
                 del players[target]
 
         elif enemy_choice == 1:
@@ -212,8 +205,18 @@ while running:
                 print(bcolors.OKBLUE + spell.name + " heals " + enemy.name + " for", str(magic_dmg),
                       "HP" + bcolors.ENDC)
             elif spell.type == "black":
-                target = random.randrange(0, 3)
+                target = random.randrange(0, len(players))
+
+                if players[target].get_hp() == 0:
+                    print(players[target].name.replace(" ", "") + " has died")
+                    defeated_players += 1
+                    del players[target]
 
                 players[target].take_damage(magic_dmg)
                 print(bcolors.FAIL + spell.name + " deals", str(magic_dmg),
                       "points of damage to " + players[target].name.replace(" ", "") + bcolors.ENDC)
+
+    # Check if enemies won
+    if defeated_players == number_players:
+        print(bcolors.FAIL + "Your enemies has defeated you!" + bcolors.ENDC)
+        running = False
