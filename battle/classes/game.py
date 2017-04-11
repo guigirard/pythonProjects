@@ -57,35 +57,45 @@ class Person:
 
     def choose_action(self):
         i = 1
-        print("\n" + "    " + bcolors.BOLD + self.name + bcolors.ENDC)
-        print(bcolors.OKBLUE + bcolors.BOLD + "    " + "ACTIONS:" + bcolors.ENDC)
+        print("\n" + "    "
+              + bcolors.BOLD + self.name + bcolors.ENDC)
+        print(bcolors.OKBLUE + bcolors.BOLD +
+              "    " + "ACTIONS:"
+              + bcolors.ENDC)
         for item in self.action:
-            print("        " + str(i) + ".", item)
+            print("        {}. {}"
+                  .format(str(i), item))
             i += 1
 
     def choose_magic(self):
         i = 1
         print("\n" + bcolors.OKBLUE + bcolors.BOLD + "    " + "MAGIC:" + bcolors.ENDC)
         for spell in self.magic:
-            print("        " + str(i) + ".", spell.name, "(cost:", str(spell.cost) + ")")
+            print("        {}. {} (cost: {})"
+                  .format(str(i), spell.name, str(spell.cost)))
             i += 1
 
     def choose_item(self):
         i = 1
-        print("\n" + bcolors.OKGREEN + bcolors.BOLD + "    " + "ITEMS:" + bcolors.ENDC)
+        print("\n" + bcolors.OKGREEN + bcolors.BOLD +
+              "    " + "ITEMS:"
+              + bcolors.ENDC)
         for item in self.items:
-            print("        " + str(i) + ".", item["item"].name + ":", item["item"].description,
-                  "(x" + str(item["quantity"]) + ")")
+            print("        {}. {}: {} (x{})"
+                  .format(str(i), item["item"].name, item["item"].description, str(item["quantity"])))
             i += 1
 
     def choose_target(self, enemies):
         i = 1
-        print("\n" + bcolors.FAIL + bcolors.BOLD + "    " + "TARGET:" + bcolors.ENDC)
+        print("\n" + bcolors.FAIL + bcolors.BOLD +
+              "    TARGET:"
+              + bcolors.ENDC)
         for enemy in enemies:
             if enemy.get_hp() != 0:
-                print("        " + str(i) + ".", enemy.name)
+                print("        {}. {}"
+                      .format(str(i), enemy.name))
                 i += 1
-        choice = int(input("    Choose target: ")) -1
+        choice = int(input("    Choose target: ")) - 1
         return choice
 
     def get_enemy_stats(self):
@@ -116,8 +126,10 @@ class Person:
 
         print("                         _________________________________________________________________________"
               "_____")
-        print(bcolors.BOLD + self.name + "    " + "HP: " +
-              enemy_current_hp + "|" + bcolors.FAIL + hp_bar + bcolors.ENDC)
+        print(bcolors.BOLD +
+              "{}    HP: {}|"
+              .format(self.name, enemy_current_hp)
+              + bcolors.FAIL + hp_bar + bcolors.ENDC)
 
     # Defining points bars starting points
     def get_stats(self):
@@ -173,10 +185,13 @@ class Person:
 
             # Printing the results of combats on HP and MP
         print("                        _______________________________________")
-        print(bcolors.BOLD + self.name + "    " + "HP: " +
-              current_hp + "|" + bcolors.OKGREEN + hp_bar + bcolors.ENDC +
-              "\n                        " + "________________" + "\n" + "          " + "MP:   " +
-              current_mp + "|" + bcolors.OKBLUE + mp_bar + bcolors.ENDC)
+        print(bcolors.BOLD +
+              "{}    HP: {}|"
+              .format(self.name, current_hp)
+              + bcolors.OKGREEN + hp_bar + bcolors.ENDC +
+              "\n                        ________________\n          MP:   {}|"
+              .format(current_mp)
+              + bcolors.OKBLUE + mp_bar + bcolors.ENDC)
 
     def choose_enemy_spell(self):
         if self.hp / self.maxhp * 100 > 50:
